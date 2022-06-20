@@ -101,6 +101,7 @@ type updHeader [szCmdUPD]byte
 func (h updHeader) Consumed() uint32 {
 	return binary.LittleEndian.Uint32(h[:])
 }
+
 func (h updHeader) Window() uint32 {
 	return binary.LittleEndian.Uint32(h[4:])
 }

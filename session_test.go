@@ -602,7 +602,7 @@ func TestKeepAliveBlockWriteTimeout(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer cli.Close()
-	//when writeFrame block, keepalive in old version never timeout
+	// when writeFrame block, keepalive in old version never timeout
 	blockWriteCli := &blockWriteConn{cli}
 
 	config := DefaultConfig()
@@ -859,7 +859,7 @@ func TestRandomFrame(t *testing.T) {
 		t.Fatal(err)
 	}
 	session, _ = Client(cli, nil)
-	//close first
+	// close first
 	session.Close()
 	for i := 0; i < 100; i++ {
 		f := newFrame(1, byte(rand.Uint32()), rand.Uint32())
@@ -888,7 +888,7 @@ func TestWriteFrameInternal(t *testing.T) {
 		t.Fatal(err)
 	}
 	session, _ = Client(cli, nil)
-	//close first
+	// close first
 	session.Close()
 	for i := 0; i < 100; i++ {
 		f := newFrame(1, byte(rand.Uint32()), rand.Uint32())
@@ -914,7 +914,7 @@ func TestWriteFrameInternal(t *testing.T) {
 
 		session.writeFrameInternal(f, timer.C, CLSDATA)
 	}
-	//deadline occur
+	// deadline occur
 	{
 		c := make(chan time.Time)
 		close(c)
@@ -938,7 +938,7 @@ func TestWriteFrameInternal(t *testing.T) {
 		f := newFrame(1, byte(rand.Uint32()), rand.Uint32())
 		c := make(chan time.Time)
 		go func() {
-			//die first, deadline second, better for coverage
+			// die first, deadline second, better for coverage
 			time.Sleep(time.Second)
 			session.Close()
 			time.Sleep(time.Second)
@@ -1015,6 +1015,7 @@ func BenchmarkAcceptClose(b *testing.B) {
 		}
 	}
 }
+
 func BenchmarkConnSmux(b *testing.B) {
 	cs, ss, err := getSmuxStreamPair()
 	if err != nil {
