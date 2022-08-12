@@ -32,6 +32,8 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/sagernet/sing/common/bufio"
 )
 
 const (
@@ -526,10 +528,7 @@ func (s *Session) sendLoop() {
 	var err error
 	var vec [][]byte // vector for writeBuffers
 
-	bw, ok := s.conn.(interface {
-		WriteBuffers(v [][]byte) (n int, err error)
-	})
-
+	bw, ok := bufio.CreateVectorisedWriter(s.conn)
 	if ok {
 		buf = make([]byte, headerSize)
 		vec = make([][]byte, 2)
@@ -551,7 +550,7 @@ func (s *Session) sendLoop() {
 			if len(vec) > 0 {
 				vec[0] = buf[:headerSize]
 				vec[1] = request.frame.data
-				n, err = bw.WriteBuffers(vec)
+				n, err = bufio.WriteVectorised(bw, vec)
 			} else {
 				copy(buf[headerSize:], request.frame.data)
 				n, err = s.conn.Write(buf[:headerSize+len(request.frame.data)])
