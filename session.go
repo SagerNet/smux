@@ -305,6 +305,12 @@ func (s *Session) IsClosed() bool {
 	select {
 	case <-s.die:
 		return true
+	case <-s.chSocketReadError:
+		return true
+	case <-s.chSocketWriteError:
+		return true
+	case <-s.chProtoError:
+		return true
 	default:
 		return false
 	}
